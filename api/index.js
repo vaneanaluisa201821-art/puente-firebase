@@ -1,22 +1,34 @@
 export default async function handler(req, res) {
-  const msg = req.query.msg || "sin_mensaje";
+  try {
+    const msg = req.query.msg || "sin_mensaje";
 
-  // URL de tu Firebase Realtime Database (.json al final)
-  const firebaseURL = "https://tesis-rutas-default-rtdb.firebaseio.com";
+    // URL base de Firebase (sin .json)
+    const firebaseURL = "https://tesis-rutas-default-rtdb.firebaseio.com";
 
-  // Objeto a enviar
-  const data = {
-    mensaje: msg,
-    fecha: new Date().toISOString()
-  };
+    // Datos a enviar
+    const data = {
+      mensaje: msg,
+      fecha: new Date().toISOString()
+    };
 
-  // Enviar a Firebase
-  const response = await fetch(firebaseURL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data)
-  });
+    // Envío POST a Firebase
+    const response = await fetch(`${firebaseURL}/datos.json`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
 
-  const result = await response.json();
-  res.status(200).json({ status: "OK", firebase_response: result });
+    const result = await response.json();
+
+    res.status(200).json({
+      status: "OK",
+      enviado: data,
+      firebase_response: result
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "ERROR",
+      message: error.message
+    });
+  }
 }
