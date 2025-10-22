@@ -2,7 +2,7 @@ export default async function handler(req, res) {
   const msg = req.query.msg || "sin_mensaje";
 
   // URL de tu Firebase Realtime Database (.json al final)
-  const firebaseURL = "https://tesis-rutas-default-rtdb.firebaseio.com/datos.json";
+  const firebaseURL = "https://tesis-rutas-default-rtdb.firebaseio.com";
 
   // Objeto a enviar
   const data = {
